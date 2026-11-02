@@ -1,7 +1,8 @@
 #include "PIDcon.h"
+#include <math.h>
 
 
-PID::PID(float k_p, float k_i, float k_d, float T_s, float p, Discretization discretization)
+PID::PID(float k_p, float k_i, float k_d, float T_s, float p, Discretization discretization, float w_w)
 {
     // set PID parameters
     set_tuning(k_p, k_i, k_d);
@@ -15,9 +16,15 @@ PID::PID(float k_p, float k_i, float k_d, float T_s, float p, Discretization dis
     anti_windup = false;
 
     // set T_s and discretization method
-    this->T_s = T_s;
+    this->T_s = (T_s > 0.0f) ? T_s : 0.01f;
     this->discretization = discretization;
 
+    // prewarping coefficient
+    c = 2.0f/this->T_s;
+
+    if (discretization == TUSTIN_PREWARP_METHOD) c = w_w/tanf(w_w*this->T_s/2.0f);
+
+    // reset method
     reset();
 }
 
@@ -37,15 +44,26 @@ float PID::compute(float r, float y)
             I = I_prev +k_i*T_s*e; 
 
             // derivative action
-            D = k_d*(e -e_prev)/T_s;
+            D = (D_prev +k_d*p*(e -e_prev))/(1 +p*T_s);
+
             break;
 
         case TUSTIN_METHOD:
             // integral control action
-            I = I_prev +k_i*(e +e_prev)*T_s/2;
+            I = I_prev +k_i*T_s*(e +e_prev)/2;
 
             // derivative control action
             D = D_prev*(2 -p*T_s)/(2 +p*T_s) +2*p*k_d/(2 +p*T_s)*(e -e_prev);
+            
+            break;
+
+        case TUSTIN_PREWARP_METHOD:
+            // integral control action
+            I = I_prev +k_i*(e +e_prev)/c;
+
+            // derivative control action
+            D = D_prev*(c -p)/(c +p) +p*k_d*c/(c +p)*(e -e_prev);
+
             break;
 
         default:

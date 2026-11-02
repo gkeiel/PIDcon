@@ -6,25 +6,24 @@ float y = 0.0f; // output
 float u = 0.0f; // control input
 
 // reference parameters
-float t   = 0.0f; // time
+float t = 0.0f; // time
 uint8_t r_high = 50;
 uint8_t r_low  = 0;
 
 // plant parameters
-float w_n = 1.0f;  // natural frequency (rad/s)
+float w_n  = 1.0f; // natural frequency (rad/s)
 float zeta = 0.7f; // damping ratio
 float v = 0.0f;
 
 // PID parameters
-float k_p = 100.0f;
-float k_i = 5.0f;
-float k_d = 0.0f;
+float k_p = 20.0f;
+float k_i = 10.0f;
+float k_d = 2.0f;
 
 
 // PID
 PID pid(k_p, k_i, k_d, T_s); // default
 // PID pid(k_p, k_i, k_d, T_s, 20.0, TUSTIN_METHOD); // explicit
-// pid.set_anti_windup(true);  // activate anti-windup
 
 void reference(){
     t += T_s;
@@ -38,6 +37,7 @@ void reference(){
 
 void setup() {
     Serial.begin(115200);
+    // pid.set_anti_windup(true); // activate anti-windup
 }
 
 void loop() {

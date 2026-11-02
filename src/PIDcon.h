@@ -2,12 +2,12 @@
 #define PIDcon_h
 
 
-enum Discretization { EULER_METHOD, TUSTIN_METHOD  };
+enum Discretization { EULER_METHOD, TUSTIN_METHOD, TUSTIN_PREWARP_METHOD };
 
 class PID {
     public:
         // constructor
-        PID(float k_p, float k_i, float k_d, float T_s, float p = 100.0f, Discretization discretization = TUSTIN_METHOD);
+        PID(float k_p, float k_i, float k_d, float T_s, float p = 100.0f, Discretization discretization = TUSTIN_METHOD, float w_w = 0.0f);
 
         // configuration
         void set_tuning(float k_p, float k_i, float k_d);
@@ -28,9 +28,8 @@ class PID {
 
     private:
 
-        float k_p, k_i, k_d, T_s, p;
-        float u_min, u_max;
-        float I, D, e_prev, I_prev, D_prev;
+        float k_p, k_i, k_d, T_s, p, c;
+        float I, D, e_prev, I_prev, D_prev, u_min, u_max;
         bool anti_windup;
         Discretization discretization;
 };
