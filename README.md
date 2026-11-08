@@ -7,10 +7,25 @@ The library implements PID controllers using different discretization methods, i
 The library is intended as a practical reference for implementing, testing, and applying PID control algorithms in embedded systems, particularly on **8-bit AVR microcontrollers** such as the ATmega328P. Furthermore, the sampling period is configured by the user and must match the actual interval between consecutive calls to the controller.
 
 
+## PID controller
+
+The continuous-time PID controller is defined by:
+
+$$C_{PID}(s) = k_p +\frac{k_i}{s} +\frac{k_d p s}{s +p}$$
+
+where:
+- $k_p$ is the proportional gain;
+- $k_i$ is the integral gain;
+- $k_d$ is the derivative gain;
+- $p$ is the derivative filter coefficient.
+
+The discrete-time controllers are obtained by applying different discretization methods to the continuous-time transfer function above.
+
+
 ## Features
 
 - **PID control**: Implements discrete-time PID action.
-- **Discretization methods**: Supports Euler and Tustin approximations.
+- **Discretization methods**: Supports Euler, Tustin and Tustin with prewarping approximations.
 - **Derivative filtering**: Includes a first-order high-frequency filter to attenuate noise in the derivative action.
 - **Anti-windup**: Implements conditional integration to prevent excessive accumulation of the integral action during saturation.
 - **Parameter configuration**: Provides methods to adjust PID gains and additional parameters.
@@ -56,6 +71,7 @@ The controller provides the following methods:
 | `set_filter(p)` | Sets the derivative filter parameter. |
 | `set_limit(u_min, u_max)` | Sets the output saturation limits. |
 | `set_anti_windup(enable)` | Enables or disables conditional integration. |
+| `compute(r, y)` | Computes the control signal. |
 | `reset()` | Resets the controller's internal states. |
 | `get_kp()` | Returns the proportional gain. |
 | `get_ki()` | Returns the integral gain. |

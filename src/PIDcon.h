@@ -27,8 +27,9 @@ class PID {
         float get_kd();
 
     private:
-
-        float k_p, k_i, k_d, T_s, p, c;
+        void update_coefficients();
+        float k_p, k_i, k_d, T_s, p;
+        float c, b_i, a_d, b_d;
         float I, D, e_prev, I_prev, D_prev, u_min, u_max;
         bool anti_windup;
         Discretization discretization;

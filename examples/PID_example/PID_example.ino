@@ -20,10 +20,10 @@ float k_p = 20.0f;
 float k_i = 10.0f;
 float k_d = 2.0f;
 
-
 // PID
-PID pid(k_p, k_i, k_d, T_s); // default
+PID pid(k_p, k_i, k_d, T_s);                         // default
 // PID pid(k_p, k_i, k_d, T_s, 20.0, TUSTIN_METHOD); // explicit
+
 
 void reference(){
     t += T_s;
