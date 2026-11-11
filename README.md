@@ -78,6 +78,10 @@ The controller provides the following methods:
 | `get_kd()` | Returns the derivative gain. |
 
 
-## Notes
+## Support the Project
 
-Improvements and additional control strategies may be added in future versions.
+Future versions may include improvements and additional features. 
+
+If you find this library useful, consider making a voluntary contribution solely to support this project's maintenance and further development. 
+
+[![Support the Project](https://img.shields.io/badge/Support%20the%20Project-Ko--fi-FF5E5B?logo=ko-fi&logoColor=white)](https://ko-fi.com/gkeiel)
